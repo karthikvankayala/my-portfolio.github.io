@@ -1,538 +1,888 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="style.css"/>
-    <link rel="stylesheet" href="mediaqueries.css"/>    
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Karthik Vankayala — Full Stack Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --bg2: #ffffff;
+    --bg3: #eef1f6;
+    --accent: #0070f3;
+    --accent2: #7c3aed;
+    --accent3: #059669;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #dde3ed;
+    --card: #ffffff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,112,243,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,112,243,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(245,247,250,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    color: var(--accent);
+  }
+  .nav-logo span { color: var(--muted); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 6rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(0,112,243,0.08) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+  }
+  .hero-glow2 {
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%);
+    bottom: 50px; left: -100px;
+    pointer-events: none;
+  }
+  .hero-content {
+    max-width: 950px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid rgba(0,212,255,0.25);
+    background: rgba(0,212,255,0.04);
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .pulse-dot {
+    width: 7px; height: 7px;
+    background: var(--accent3);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 7.5vw, 7rem);
+    line-height: 0.93;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.3rem;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+  .hero-name .outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(0,0,0,0.12);
+    display: block;
+  }
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 580px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    line-height: 1.8;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+  .hero-desc strong { color: var(--text); font-weight: 500; }
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 2.2rem;
+    background: var(--accent);
+    color: #ffffff;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+  .btn-primary:hover {
+    background: #1a7fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(0,112,243,0.3);
+  }
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 2.2rem;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,212,255,0.04);
+  }
+  .hero-stats {
+    display: flex;
+    gap: 3.5rem;
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.8s 0.5s ease both;
+    flex-wrap: wrap;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+  .section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 2.4rem;
+    letter-spacing: -0.02em;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  /* ABOUT */
+  #about {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .about-text p {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+    font-weight: 300;
+  }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+  .about-contact { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .contact-icon {
+    width: 34px; height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+  .contact-item a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .contact-item a:hover { color: var(--accent); }
+  .info-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 0.9rem;
+    transition: border-color 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .info-card:hover { border-color: rgba(0,212,255,0.25); }
+  .info-card-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .info-card-value { font-size: 0.9rem; color: var(--text); line-height: 1.5; }
+
+  /* SKILLS */
+  #skills { background: var(--bg); }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1.5rem;
+  }
+  .skill-category {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .skill-category::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .skill-category:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-2px); }
+  .skill-category:hover::before { opacity: 1; }
+  .skill-cat-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .skill-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.28rem 0.7rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: all 0.15s;
+    cursor: default;
+  }
+  .skill-tag:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,212,255,0.05); }
+
+  /* EXPERIENCE */
+  #experience {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, var(--accent) 0%, var(--accent2) 50%, rgba(0,112,243,0.1) 100%);
+  }
+  .timeline-item {
+    position: relative;
+    padding-bottom: 3.5rem;
+    padding-left: 2.5rem;
+  }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-dot {
+    position: absolute;
+    left: -2.4rem;
+    top: 0.4rem;
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent);
+  }
+  .tl-green { background: var(--accent3) !important; box-shadow: 0 0 12px var(--accent3) !important; }
+  .tl-purple { background: var(--accent2) !important; box-shadow: 0 0 12px var(--accent2) !important; }
+  .tl-orange { background: #f59e0b !important; box-shadow: 0 0 12px #f59e0b !important; }
+  .tl-red { background: #ef4444 !important; box-shadow: 0 0 12px #ef4444 !important; }
+  .tl-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.3rem;
+    flex-wrap: wrap;
+  }
+  .tl-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+  .tl-period {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    padding: 0.25rem 0.7rem;
+    border: 1px solid rgba(0,212,255,0.2);
+    white-space: nowrap;
+    background: rgba(0,212,255,0.03);
+    height: fit-content;
+  }
+  .tl-company {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+  .tl-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+  .tl-bullets li {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.65;
+  }
+  .tl-bullets li::before { content: '▹'; color: var(--accent); flex-shrink: 0; margin-top: 0.05rem; }
+  .tl-bullets strong { color: var(--text); font-weight: 500; }
+
+  /* EDUCATION */
+  #education { background: var(--bg); }
+  .edu-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    max-width: 680px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .edu-card:hover { border-color: rgba(0,212,255,0.3); }
+  .edu-card::after {
+    content: 'M.S.';
+    position: absolute;
+    right: 2rem; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 5rem;
+    color: rgba(0,112,243,0.06);
+    letter-spacing: -0.05em;
+    pointer-events: none;
+  }
+  .edu-degree {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .edu-school {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    margin-bottom: 1.2rem;
+  }
+  .edu-meta { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .edu-meta-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+  .edu-meta-item span { color: var(--accent3); }
+
+  /* CONTACT */
+  #contact {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 5rem 4rem;
+  }
+  .contact-headline {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+  .contact-sub { color: var(--muted); font-size: 1rem; margin-bottom: 2.5rem; font-weight: 300; }
+  .contact-btns { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.63rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.75); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section, #hero, #contact { padding: 4rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-stats { gap: 2rem; }
+    footer { flex-direction: column; gap: 0.5rem; padding: 1.5rem; text-align: center; }
+  }
+</style>
 </head>
 <body>
-<nav id="desktop-nav">
-    <div class="logo">Karthik Vankayala</div>
-    <div>
-        <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </div>
+
+<nav>
+  <div class="nav-logo">KV<span>.dev</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
 </nav>
-<nav id="hamburger-nav">
-    <div class="logo">Karthik Vankayala</div>
-    <div class="hamburger-menu">
-        <div class="hamburger-icon" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <div class="menu-link">
-            <li><a href="#about" onclick="toggleMenu()">About</a></li>
-            <li><a href="#skills" onclick="toggleMenu()">Skills</a></li>
-            <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
-            <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
-            <li><a href="#experience" onclick="toggleMenu()">Experience</a></li>
-        </div>
+
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-tag">
+      <div class="pulse-dot"></div>
+      Available for Opportunities
     </div>
-</nav>
-<section id="profile">
-<div class="section__pic-container">
-    <img src="./assets/test.jpg" alt="profile picture"/>
-</div>
-
-    <div class="section__text">
-        <p class="section__text__p1">Hello I'm</p>
-        <h1 class="title">Karthik</h1>
-        <p class="section__text__p2">Full Stack Developer</p>
-    <div class="btn-container">
-        <button class="btn btn-color-2" onclick="window.open('./assets/resume-example.pdf')">
-            Download CV
-        </button>
-        <button class="btn btn-color-1" onclick="location.href='./#contact'">
-            Contact Info
-        </button>
-
+    <h1 class="hero-name">
+      Karthik<br>
+      <span class="outline">Vankayala</span>
+    </h1>
+    <p class="hero-desc">
+      <strong>Full Stack Developer</strong> with 8+ years engineering scalable enterprise systems.
+      Java/Spring Boot backends · React &amp; Angular SPAs · Cloud-native AWS architectures.
+    </p>
+    <div class="hero-actions">
+      <a href="#experience" class="btn-primary">View Experience →</a>
+      <a href="mailto:vankarthik123@gmail.com" class="btn-outline">✉ Get In Touch</a>
     </div>
-    <br>
-    <div class="socials-container">
-        <img src="./assets/linkedin.png" 
-        alt="My LinkedIn Profile" 
-        class="icon"
-        onclick="location.href='https://www.linkedin.com/in/vankayala-karthik-75b47a128/'"
-        />
-        <img src="./assets/github.png" 
-        alt="My Github profile" 
-        class="icon"
-        onclick="location.href='https://www.github.com/'"
-        />
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div>
+        <div class="stat-num">5</div>
+        <div class="stat-label">Companies</div>
+      </div>
+      <div>
+        <div class="stat-num">30+</div>
+        <div class="stat-label">Technologies</div>
+      </div>
+      <div>
+        <div class="stat-num">3.5</div>
+        <div class="stat-label">Master's GPA</div>
+      </div>
     </div>
- </div>
-
-
+  </div>
 </section>
+
 <section id="about">
-    <p class="section__text__p1">Get to Know More</p>
-    <h1 class="title">About Me</h1>
-    <div class="section-container">
-        <div class="section__pic-container">
-            <img
-            src="./assets/Software-developer.jpg"
-            alt="Profile Pic"
-            class="about-pic"
-            />
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">About</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>
+        I'm a <strong>Full Stack Developer</strong> with 8+ years building enterprise-grade
+        web applications end-to-end — from architecture and design to production deployment
+        and performance tuning.
+      </p>
+      <p>
+        My core strengths are <strong>Java/Spring Boot microservices</strong>, <strong>React &amp; Angular SPAs</strong>,
+        and <strong>cloud-native deployments on AWS</strong>. I've led major legacy-to-modern migrations,
+        engineered zero-downtime CI/CD pipelines, and built batch systems handling 80,000+ records
+        with sub-5-second response times.
+      </p>
+      <p>
+        Currently modernizing critical healthcare infrastructure at the
+        <strong>State of Texas HHSC</strong> — re-engineering legacy systems with modern Java,
+        Spring Batch, and OWASP-compliant security.
+      </p>
+      <div class="about-contact">
+        <div class="contact-item">
+          <div class="contact-icon">✉</div>
+          <a href="mailto:vankarthik123@gmail.com">vankarthik123@gmail.com</a>
         </div>
-        <div class="about-details-container">
-            <div class="about-containers">
-                <div class="details-container">
-                    <img src="./assets/experience.png"
-                    alt="experience icon"
-                    class="icon"
-                    />
-                    <h3>Experience</h3>
-                    <p>7 Years <br /> Full Stack Developer</p>
-                </div>
-                <div class="details-container">
-                    <img src="./assets/education.png"
-                    alt="Education icon"
-                    class="icon"
-                    />
-                    <h3>Education</h3>
-                    <p>MS Computers Science <br /> Bachelors Degree</p> 
-                </div>
-            </div>
-            <div class="text-container">
-               <p>
-                I am a Full Stack Developer with 7 years of 
-                experience in developing scalable and 
-                efficient web applications.
-               </p> 
-            </div>
+        <div class="contact-item">
+          <div class="contact-icon">☎</div>
+          <span>(816) 376-9016</span>
         </div>
-        
+        <div class="contact-item">
+          <div class="contact-icon">in</div>
+          <a href="https://www.linkedin.com/in/vankayala-karthik-75b47a128/" target="_blank">linkedin.com/in/vankayala-karthik</a>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <span>Texas, USA</span>
+        </div>
+      </div>
     </div>
-    <img src="./assets/arrow.png" alt="Arrow icon" 
-    class="icon arrow"
-        onclick="location.href='./#skills'"
-        />
-
+    <div class="reveal">
+      <div class="info-card">
+        <div class="info-card-label">Current Role</div>
+        <div class="info-card-value">Full Stack Developer @ CY9 / State of Texas HHSC</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Core Stack</div>
+        <div class="info-card-value">Java · Spring Boot · React · Angular · AWS · Kubernetes</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Architecture Patterns</div>
+        <div class="info-card-value">Microservices · Event-driven (Kafka) · n-Tier · REST · GraphQL</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Education</div>
+        <div class="info-card-value">M.S. Computer Science — University of Central Missouri · GPA 3.5</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Methodologies</div>
+        <div class="info-card-value">Agile · TDD · BDD · DDD · CI/CD · DevOps</div>
+      </div>
+    </div>
+  </div>
 </section>
+
 <section id="skills">
-    <p class="section__text__p1">Explore My</p>
-    <h1 class="title">Skills</h1>
-    <div class="experience-details-container">
-      <div class="about-containers">
-        <div class="details-container">
-          <h2 class="experience-sub-title">Backend Development</h2>
-          <div class="article-container">
-            <article>
-              <img
-                src="./assets/checkmark.png"
-                alt="Experience icon"
-                class="icon"
-              />
-              <div>
-                <h3>Java</h3>
-                <p>Experienced</p>
-              </div>
-            </article>
-            <article>
-              <img
-                src="./assets/checkmark.png"
-                alt="Experience icon"
-                class="icon"
-              />
-              <div>
-                <h3>Spring &<br>Spring boot</h3>
-                <p>Experienced</p>
-              </div>
-            </article>
-            <article>
-              <img
-                src="./assets/checkmark.png"
-                alt="Experience icon"
-                class="icon"
-              />
-              <div>
-                <h3>RESTful API</h3>
-                <p>Experienced</p>
-              </div>
-            </article>
-            <article>
-              <img
-                src="./assets/checkmark.png"
-                alt="Experience icon"
-                class="icon"
-              />
-              <div>
-                <h3>Hibernate/Oracle</h3>
-                <p>Experienced</p>
-              </div>
-            </article>
-            <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>AWS/Azure/GCP</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>RabbitMQ</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-            <article> <img src="./assets/checkmark.png" 
-                alt="Experience icon" 
-                class="icon" />
-                <div>
-                    <h3>Git</h3>
-                    <p>Experienced</p>
-                </div>
-            </article>
-            <article> <img src="./assets/checkmark.png" 
-                alt="Experience icon" 
-                class="icon" />
-                <div>
-                    <h3>Docker</h3>
-                    <p>Experienced</p>
-                </div>
-            </article>
-            <article> <img src="./assets/checkmark.png" 
-                alt="Experience icon" 
-                class="icon" />
-                <div>
-                    <h3>Maven</h3>
-                    <p>Experienced</p>
-                </div>
-            </article>
-             
-              
-          </div>
-        </div>
-        <div class="details-container">
-            <h2 class="experience-sub-title">Frontend Development</h2>
-            <div class="article-container">
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>HTML</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>CSS</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>SASS</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>JavaScript</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>TypeScript</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>React Js</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>Angular</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>Node Js</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>vue js</h3>
-                  <p>Experienced</p>
-                </div>
-              </article>
-            </div>
-          </div>
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Technical Skills</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-category reveal">
+      <div class="skill-cat-title">// Languages</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Java / J2EE</span><span class="skill-tag">TypeScript</span>
+        <span class="skill-tag">JavaScript</span><span class="skill-tag">Python</span>
+        <span class="skill-tag">C#</span><span class="skill-tag">SQL</span>
       </div>
     </div>
-    <img
-    src="./assets/arrow.png"
-    alt="Arrow icon"
-    class="icon arrow"
-    onclick="location.href='./#projects'"
-  />
-  </section>
-  <section id="projects">
-    <p class="section__text__p1">Browse My Recent</p>
-    <h1 class="title">Projects</h1>
-    <div class="experience-details-container">
-      <div class="about-containers">
-        <div class="details-container color-container">
-          <div class="article-container">
-            <img
-              src="./assets/project-1.png"
-              alt="Project 1"
-              class="project-img"
-            />
-          </div>
-          <h2 class="experience-sub-title project-title">Project One</h2>
-          <div class="btn-container">
-            <button
-              class="btn btn-color-2 project-btn"
-              onclick="location.href='https://github.com/'"
-            >
-              Github
-            </button>
-            <button
-              class="btn btn-color-2 project-btn"
-              onclick="location.href='https://github.com/'"
-            >
-              Live Demo
-            </button>
-          </div>
-        </div>
-        <div class="details-container color-container">
-          <div class="article-container">
-            <img
-              src="./assets/project-2.png"
-              alt="Project 2"
-              class="project-img"
-            />
-          </div>
-          <h2 class="experience-sub-title project-title">Project Two</h2>
-          <div class="btn-container">
-            <button
-              class="btn btn-color-2 project-btn"
-              onclick="location.href='https://github.com/'"
-            >
-              Github
-            </button>
-            <button
-              class="btn btn-color-2 project-btn"
-              onclick="location.href='https://github.com/'"
-            >
-              Live Demo
-            </button>
-          </div>
-        </div>
-        <div class="details-container color-container">
-          <div class="article-container">
-            <img
-              src="./assets/project-3.png"
-              alt="Project 3"
-              class="project-img"
-            />
-          </div>
-          <h2 class="experience-sub-title project-title">Project Three</h2>
-          <div class="btn-container">
-            <button
-              class="btn btn-color-2 project-btn"
-              onclick="location.href='https://github.com/'"
-            >
-              Github
-            </button>
-            <button
-              class="btn btn-color-2 project-btn"
-              onclick="location.href='https://github.com/'"
-            >
-              Live Demo
-            </button>
-          </div>
-        </div>
+    <div class="skill-category reveal">
+      <div class="skill-cat-title">// Backend Frameworks</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Spring Boot 3.x</span><span class="skill-tag">Spring MVC</span>
+        <span class="skill-tag">Spring Batch</span><span class="skill-tag">Hibernate / JPA</span>
+        <span class="skill-tag">Spring Security</span><span class="skill-tag">WebFlux</span>
+        <span class="skill-tag">Microservices</span><span class="skill-tag">EJB / Servlets</span>
       </div>
     </div>
-    <img
-      src="./assets/arrow.png"
-      alt="Arrow icon"
-      class="icon arrow"
-      onclick="location.href='./#experience'"
-    />
-  </section>
-  <section id="experience">
-    <p class="section__text__p1">Browse My Previous</p>
-    <h1 class="title">Professional Experience</h1>
-    <div class="experience-details-container">
-      <div class="about-containers">
-        <div class="details-container color-container">
-          <div class="article-container">
-            <img
-              src="./assets/vsion.jpeg"
-              alt="Project 1"
-              class="project-img"
-            />
-          </div>
-          <h2 class="experience-sub-title project-title">Vsion Technology Pvt Ltd</h2>
-          <div class="btn-container">
-            <button
-              class="btn btn-color-2 project-btn"
-              onclick="location.href='https://www.vsiontek.com/it-consulting-or-it-services-about-us'"
-            >
-              Visit Website
-            </button>
-            
-          </div>
-        </div>
-        <div class="details-container color-container">
-          <div class="article-container">
-            <img
-              src="./assets/tcs.jpeg"
-              alt="Project 2"
-              class="project-img"
-            />
-          </div>
-          <h2 class="experience-sub-title project-title">Tata Consultancy Service</h2>
-          <div class="btn-container">
-            <button
-              class="btn btn-color-2 project-btn"
-              onclick="location.href='https://www.tcs.com/'"
-            >
-              Visit Website
-            </button>
-          </div>
-        </div>
-        <div class="details-container color-container">
-          <div class="article-container">
-            <img
-              src="./assets/cognizant.png"
-              alt="Project 3"
-              class="project-img"
-            />
-          </div>
-          <h2 class="experience-sub-title project-title">Cognizant Technology Solutions</h2>
-          <div class="btn-container">
-            <button
-            class="btn btn-color-2 project-btn"
-            onclick="location.href='https://www.cognizant.com/in/en'"
-          >
-            Visit Website
-          </button>
-          </div>
-        </div>
+    <div class="skill-category reveal">
+      <div class="skill-cat-title">// Frontend Frameworks</div>
+      <div class="skill-tags">
+        <span class="skill-tag">React 16/17</span><span class="skill-tag">Angular 14–18</span>
+        <span class="skill-tag">Node.js</span><span class="skill-tag">Redux</span>
+        <span class="skill-tag">RxJS</span><span class="skill-tag">Vue.js</span>
+        <span class="skill-tag">Bootstrap</span><span class="skill-tag">SCSS</span>
       </div>
     </div>
-    <img
-      src="./assets/arrow.png"
-      alt="Arrow icon"
-      class="icon arrow"
-      onclick="location.href='./#contact'"
-    />
-  </section>
-  
-  <section id="contact">
-    <p class="section__text__p1">Get In Touch</p>
-    <h1 class="title">Contact Me</h1>
-    <div class="contact-info-upper-container">
-        <div class="contact-info-container">
-            <img src="./assets/email.png"
-            alt="Email icon"
-            class="icon contact-icon"
-            />
-            <p><a href="mailto:vankarthik123@gmail.com">
-                vankarthik123@gmail.com</a></p>
-        </div>
-        <div class="contact-info-container">
-            <img src="./assets/linkedin.png"
-            alt="LinkedIn icon"
-            class="icon contact-icon"
-            />
-            <p><a href="https://www.linkedin.com/in/vankayala-karthik-75b47a128/">
-                LinkedIn</a></p>
-        </div>
-        <div class="contact-info-container">
-            <img src="./assets/phone.png"
-            alt="Contact icon"
-            class="icon contact-icon"
-            />
-            <p>+1(816)-376-9016</p>
-        </div>    
+    <div class="skill-category reveal">
+      <div class="skill-cat-title">// Cloud & DevOps</div>
+      <div class="skill-tags">
+        <span class="skill-tag">AWS (EC2, S3, Lambda)</span><span class="skill-tag">GCP</span>
+        <span class="skill-tag">Azure</span><span class="skill-tag">Docker</span>
+        <span class="skill-tag">Kubernetes</span><span class="skill-tag">OpenShift</span>
+        <span class="skill-tag">Jenkins</span><span class="skill-tag">Terraform</span>
+        <span class="skill-tag">GitLab CI</span><span class="skill-tag">Helm</span>
+      </div>
     </div>
-  </section>
-  <footer>
-    <nav>
-        <div class="nav-links-container">
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
-    <p>Copyright &#169; 2024 karthik. All Rights Reserved</p>
-  </footer>
- <script src="script.js"></script>
+    <div class="skill-category reveal">
+      <div class="skill-cat-title">// Databases</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Oracle</span><span class="skill-tag">MySQL</span>
+        <span class="skill-tag">PostgreSQL</span><span class="skill-tag">MongoDB</span>
+        <span class="skill-tag">Redis</span><span class="skill-tag">DB2</span>
+        <span class="skill-tag">NoSQL</span>
+      </div>
+    </div>
+    <div class="skill-category reveal">
+      <div class="skill-cat-title">// Messaging & APIs</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Kafka</span><span class="skill-tag">RabbitMQ</span>
+        <span class="skill-tag">ActiveMQ</span><span class="skill-tag">REST</span>
+        <span class="skill-tag">SOAP</span><span class="skill-tag">GraphQL</span>
+        <span class="skill-tag">gRPC</span><span class="skill-tag">MuleSoft</span>
+      </div>
+    </div>
+    <div class="skill-category reveal">
+      <div class="skill-cat-title">// Security & Auth</div>
+      <div class="skill-tags">
+        <span class="skill-tag">OAuth 2.0</span><span class="skill-tag">JWT</span>
+        <span class="skill-tag">OIDC</span><span class="skill-tag">SAML</span>
+        <span class="skill-tag">Okta</span><span class="skill-tag">SSL/TLS</span>
+        <span class="skill-tag">RBAC</span><span class="skill-tag">LDAP</span>
+      </div>
+    </div>
+    <div class="skill-category reveal">
+      <div class="skill-cat-title">// Testing & Monitoring</div>
+      <div class="skill-tags">
+        <span class="skill-tag">JUnit</span><span class="skill-tag">Mockito</span>
+        <span class="skill-tag">Selenium</span><span class="skill-tag">Cypress</span>
+        <span class="skill-tag">Jest</span><span class="skill-tag">Cucumber</span>
+        <span class="skill-tag">Prometheus</span><span class="skill-tag">Grafana</span>
+        <span class="skill-tag">Splunk</span><span class="skill-tag">New Relic</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Experience</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="timeline">
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="tl-header">
+        <div class="tl-role">Full Stack Developer</div>
+        <div class="tl-period">Mar 2025 – Present</div>
+      </div>
+      <div class="tl-company">CY9 · State of Texas HHSC — Texas, USA</div>
+      <ul class="tl-bullets">
+        <li>Designed scalable web applications using <strong>Java, Spring Boot &amp; Hibernate</strong> with Oracle DB; built reactive UIs in <strong>React and Angular</strong> with RESTful API integration.</li>
+        <li>Led migration of legacy Workcenter apps to a <strong>modern Java tech stack</strong>, re-engineering business logic, data access layers, and UI components.</li>
+        <li>Delivered a high-performance <strong>Excel import feature</strong> validating 80,000+ rows in under 5 minutes — dramatically reducing manual data entry effort.</li>
+        <li>Built <strong>Spring Batch</strong> applications for scheduled, large-volume data operations with fault tolerance; refactored <strong>legacy Perl components to modular Java</strong>.</li>
+        <li>Implemented backend security meeting <strong>OWASP Top 10</strong> standards: input validation, SQL injection prevention, and secure cookie handling.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot tl-green"></div>
+      <div class="tl-header">
+        <div class="tl-role">Software Engineer</div>
+        <div class="tl-period">Jan 2024 – Mar 2025</div>
+      </div>
+      <div class="tl-company">Vsion Technologies · Nationwide — Texas, USA</div>
+      <ul class="tl-bullets">
+        <li>Built two production apps independently: a <strong>Spring Boot REST document service</strong> replacing a legacy thick-client and an automated <strong>Spring Batch pipeline</strong> for fixed-width file ingestion.</li>
+        <li>Engineered a <strong>dynamic SQL search engine</strong> across 20 filter fields — reducing avg query time from 66 seconds to under 5 seconds.</li>
+        <li>Built full <strong>CI/CD pipelines with Harness &amp; GitHub Actions</strong>; managed Kubernetes via Rancher; led on-prem to cloud migration re-architecting services into cloud-native microservices.</li>
+        <li>Centralized secrets with <strong>HashiCorp Vault</strong>; monitored via <strong>New Relic</strong>; enforced code quality via SonarQube and Contrast SAST/DAST scanning.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot tl-purple"></div>
+      <div class="tl-header">
+        <div class="tl-role">Software Engineer</div>
+        <div class="tl-period">Jan 2022 – Dec 2022</div>
+      </div>
+      <div class="tl-company">Tata Consultancy Services · Delta Airlines — India</div>
+      <ul class="tl-bullets">
+        <li>Built high-performance apps with <strong>Java 8/11 &amp; Spring Boot</strong>; reactive frontends with <strong>React, Redux &amp; ES6</strong>, tested with Jest.</li>
+        <li>Designed serverless functions using <strong>AWS Lambda</strong>, reducing infrastructure costs by 30%; integrated <strong>Redis caching</strong> and optimized Oracle queries improving access speeds by 20%.</li>
+        <li>Monitored system health via <strong>Prometheus + Grafana</strong>; deployed to AWS/GCP with Gradle and GitLab CI/CD.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot tl-orange"></div>
+      <div class="tl-header">
+        <div class="tl-role">Full Stack Developer</div>
+        <div class="tl-period">Mar 2019 – Jan 2022</div>
+      </div>
+      <div class="tl-company">Cognizant Technology Solutions · Vodafone Ziggo — India</div>
+      <ul class="tl-bullets">
+        <li>Architected and deployed microservices with <strong>Spring Boot, Docker, Kubernetes &amp; Helm</strong>; achieved <strong>85%+ code coverage</strong> via Jasmine, Karma &amp; Playwright.</li>
+        <li>Implemented fault tolerance using <strong>Hystrix and Resilience4j</strong>; enabled async comms via <strong>Kafka</strong>; fine-tuned Kubernetes auto-scaling cutting downtime by 15%.</li>
+        <li>Secured services with <strong>JWT and Okta SSO</strong>; enforced code quality gates with SonarQube.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot tl-red"></div>
+      <div class="tl-header">
+        <div class="tl-role">Java Developer</div>
+        <div class="tl-period">Apr 2018 – Mar 2019</div>
+      </div>
+      <div class="tl-company">Byte Alpha — India</div>
+      <ul class="tl-bullets">
+        <li>Designed a concurrent data pipeline using <strong>ExecutorService &amp; CompletableFuture</strong>, achieving a 40% reduction in large-dataset processing time.</li>
+        <li>Used <strong>Stream API, Parallel Streams &amp; Lambda</strong> for high-performance data processing; employed Angular RxJS for async API handling over Spring Boot backend.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="tl-header">
+        <div class="tl-role">Java Developer</div>
+        <div class="tl-period">Mar 2017 – Apr 2018</div>
+      </div>
+      <div class="tl-company">Net Web Technologies — India</div>
+      <ul class="tl-bullets">
+        <li>Leveraged <strong>Spring Cloud</strong> for microservices patterns; managed data across <strong>PostgreSQL, MongoDB, MySQL &amp; Oracle</strong>.</li>
+        <li>Built CI/CD with <strong>Jenkins, Puppet &amp; Terraform</strong>; integrated <strong>AWS Lambda</strong> for event-driven serverless execution; secured services with SSL/TLS &amp; Okta.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<section id="education">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Education</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="edu-card reveal">
+    <div class="edu-degree">Master of Science — Computer Science</div>
+    <div class="edu-school">University of Central Missouri · Warrensburg, MO</div>
+    <div class="edu-meta">
+      <div class="edu-meta-item">Period: <span>Jan 2023 – May 2024</span></div>
+      <div class="edu-meta-item">GPA: <span>3.5 / 4.0</span></div>
+      <div class="edu-meta-item">Focus: <span>Software Engineering · Cloud Computing</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2 class="contact-headline reveal">Let's Build Something.</h2>
+  <p class="contact-sub reveal">Open to full-time roles, contract opportunities &amp; interesting collaborations.</p>
+  <div class="contact-btns reveal">
+    <a href="mailto:vankarthik123@gmail.com" class="btn-primary">✉ Send Email</a>
+    <a href="https://www.linkedin.com/in/vankayala-karthik-75b47a128/" target="_blank" class="btn-outline">LinkedIn →</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Karthik Vankayala · Full Stack Developer</p>
+  <p>Texas, USA · vankarthik123@gmail.com</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i % 5) * 70 + 'ms';
+    observer.observe(el);
+  });
+
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) current = s.id; });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+</script>
 </body>
 </html>
-<!-- test-->
